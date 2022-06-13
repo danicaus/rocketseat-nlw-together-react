@@ -12,6 +12,31 @@
     color: #29292e;
   }
 
+  &.highlighted {
+    background: #f4f0ff;
+    border: 1px solid #835afd;
+
+    .user-info > span {
+      color: #29292e;
+    }
+
+    button.highlighted svg {
+      path, circle {
+        stroke: #835afd;
+      }
+    }
+  }
+
+  &.answered {
+    background: #dbdcdd;
+
+    button.answered svg {
+      path, circle {
+        stroke: #835afd;
+      }
+    }
+  }
+
   &-info {
     display: flex;
     justify-content: space-between;
@@ -37,6 +62,8 @@
     }
 
     .question-options {
+      display: flex;
+      gap: 16px;
 
       button {
         border: 0;

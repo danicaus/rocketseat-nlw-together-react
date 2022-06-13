@@ -44,8 +44,6 @@ export function useRoom(roomId: string | undefined) {
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
       
       const parsedQuestions = Object.entries(firebaseQuestions).map(([key,value]) => {
-        console.log(Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id))
-
         return {
           id: key,
           content: value.content,
