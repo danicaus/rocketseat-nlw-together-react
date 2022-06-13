@@ -25,3 +25,7 @@ firebaseConfig = {
 
 A criação dessas variáveis é explicada na [documentação de primeiros passos do Firebase](https://firebase.google.com/docs/database/web/start?authuser=0&hl=pt#initialize_the_javascript_sdk), e é possível obter todas essas informações para um aplicativo criado dentro do projeto, nas configurações > Geral > Seus aplicativos (quando há uma aplicação selecionada)
 
+## Para acessar o projeto
+
+Você pode usar este app no link: https://letmeask-danicaus.vercel.app/
+
