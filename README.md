@@ -29,3 +29,12 @@ A criação dessas variáveis é explicada na [documentação de primeiros passo
 
 Você pode usar este app no link: https://letmeask-danicaus.vercel.app/
 
+
+## Possíveis implementações futuras
+
+- Deslogar
+- Excluir pergunta feita
+- Editar pergunta feita
+- Modal de confirmação de deletar pergunta e encerrar sala
+- Separar melhor página Home e NewRoom
+- Separar melhor página Room e AdminRoom

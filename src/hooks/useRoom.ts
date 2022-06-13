@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { database, ref, onValue } from '../services/firebase';
+import { useAuth } from "./useAuth";
 
 
 type FirebaseQuestions = Record<string, {
@@ -10,21 +11,27 @@ type FirebaseQuestions = Record<string, {
   },
   content: string,
   isAnswered: boolean,
-  isHighlighted: boolean
+  isHighlighted: boolean,
+  likes: Record<string, {
+    authorId: string,
+  }>
 }>
 
 type QuestionType = {
-  id: string;
+  id: string,
   author: {
     avatar: string,
-    name: string
+    name: string,
   },
   content: string,
   isAnswered: boolean,
-  isHighlighted: boolean
+  isHighlighted: boolean,
+  likeCount: number,
+  likeId: string | undefined,
 } 
 
 export function useRoom(roomId: string | undefined) {
+  const { user } = useAuth();
   const [ questions, setQuestions ] = useState<QuestionType[]>([]);
   const [ roomTitle, setRoomTitle ] = useState('');
 
@@ -32,24 +39,32 @@ export function useRoom(roomId: string | undefined) {
     const roomRef = ref(database, `rooms/${roomId}`);
 
     //listener que vai atualizar as perguntas a cada vez que a lista alterar no Firebase
-    onValue(roomRef, room => {
+    const unsubscribe = onValue(roomRef, room => {
       const databaseRoom = room.val();
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
       
       const parsedQuestions = Object.entries(firebaseQuestions).map(([key,value]) => {
+        console.log(Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id))
+
         return {
           id: key,
           content: value.content,
           author: value.author,
           isHighlighted: value.isHighlighted,
           isAnswered: value.isAnswered,
+          likeCount: Object.values(value.likes ?? {}).length,
+          likeId: Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id)?.[0]
         }
       })
 
       setRoomTitle(databaseRoom.title);
       setQuestions(Array.from(parsedQuestions));
     })
-  }, [roomId])
+
+    return () => {
+      unsubscribe()
+    }
+  }, [roomId, user?.id])
 
   return {
     questions,
