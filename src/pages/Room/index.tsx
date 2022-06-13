@@ -1,70 +1,28 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
-import { database, ref, push, onValue } from '../../services/firebase';
+import { useRoom } from '../../hooks/useRoom';
+import { database, ref, push } from '../../services/firebase';
 
 import logoImg from '../../assets/images/logo.svg';
 
 import { Button } from '../../components/Button';
 import { RoomCode } from '../../components/RoomCode';
+import { Question } from '../../components/Question';
 
 import './style.scss';
-
-type FirebaseQuestions = Record<string, {
-  author: {
-    avatar: string,
-    name: string
-  },
-  content: string,
-  isAnswered: boolean,
-  isHighlighted: boolean
-}>
 
 type RoomParams = {
   id: string
 }
 
-type Question = {
-  id: string;
-  author: {
-    avatar: string,
-    name: string
-  },
-  content: string,
-  isAnswered: boolean,
-  isHighlighted: boolean
-} 
-
 export function Room() {
   const { user } = useAuth();
-  const { id } = useParams<RoomParams>();
   const [ newQuestion, setNewQuestion ] = useState('');
-  const [ questions, setQuestions ] = useState<Question[]>([]);
-  const [ roomTitle, setRoomTitle ] = useState('');
-
-  useEffect(() => {
-    const roomRef = ref(database, `rooms/${id}`);
-
-    //listener que vai atualizar as perguntas a cada vez que a lista alterar no Firebase
-    onValue(roomRef, room => {
-      const databaseRoom = room.val();
-      const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
-      
-      const parsedQuestions = Object.entries(firebaseQuestions).map(([key,value]) => {
-        return {
-          id: key,
-          content: value.content,
-          author: value.author,
-          isHighlighted: value.isHighlighted,
-          isAnswered: value.isAnswered,
-        }
-      })
-
-      setRoomTitle(databaseRoom.title);
-      setQuestions(Array.from(parsedQuestions));
-    })
-  }, [id])
+  
+  const { id } = useParams<RoomParams>();
+  const { questions, roomTitle } = useRoom(id);
   
   async function handleSubmitQuestion(event: FormEvent) {
     event.preventDefault();
@@ -97,10 +55,10 @@ export function Room() {
       </header>
 
       <main className="room-content">
-        <div className="room-content__title">
+        <div className="room-title">
           <h1>{roomTitle}</h1>
           {questions.length > 0 && (
-            <span className="room-content__title-number">{questions.length} pergunta{questions.length > 1 ? 's' : ''}</span>
+            <span>{questions.length} pergunta{questions.length > 1 ? 's' : ''}</span>
           )}
         </div>
 
@@ -128,10 +86,14 @@ export function Room() {
           </div>
         </form>
 
-        <div>
+        <div className="room-questions">
             {questions.map(question => {
               return (
-                <p>{question.content}</p>
+                <Question
+                  key={question.id} 
+                  content={question.content} 
+                  author={question.author} 
+                />
               )
             })}
         </div>
