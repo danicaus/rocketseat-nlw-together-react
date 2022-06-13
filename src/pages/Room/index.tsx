@@ -1,15 +1,15 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useAuth } from '../hooks/useAuth';
-import { database} from '../services/firebase';
+import { useAuth } from '../../hooks/useAuth';
+import { database, ref, push, onValue } from '../../services/firebase';
 
-import logoImg from '../assets/images/logo.svg';
+import logoImg from '../../assets/images/logo.svg';
 
-import { Button } from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
+import { Button } from '../../components/Button';
+import { RoomCode } from '../../components/RoomCode';
 
-import '../styles/room.scss';
+import './style.scss';
 
 type FirebaseQuestions = Record<string, {
   author: {
@@ -44,9 +44,10 @@ export function Room() {
   const [ roomTitle, setRoomTitle ] = useState('');
 
   useEffect(() => {
-    const roomRef = database.ref(`rooms/${id}`);
+    const roomRef = ref(database, `rooms/${id}`);
 
-    roomRef.on('value', room => {
+    //listener que vai atualizar as perguntas a cada vez que a lista alterar no Firebase
+    onValue(roomRef, room => {
       const databaseRoom = room.val();
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
       
@@ -81,7 +82,7 @@ export function Room() {
       isAnswered: false
     }
 
-    await database.ref(`rooms/${id}/questions`).push(question);
+    await push(ref(database, `rooms/${id}/questions`), question);
 
     setNewQuestion('');
   }

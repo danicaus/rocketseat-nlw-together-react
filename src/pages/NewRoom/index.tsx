@@ -1,14 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FormEvent, useState } from 'react';
 
-import illustrationImg from '../assets/images/illustration.svg';
-import logoImg from '../assets/images/logo.svg';
-import { database } from '../services/firebase'
+import illustrationImg from '../../assets/images/illustration.svg';
+import logoImg from '../../assets/images/logo.svg';
+import { database, ref, push } from '../../services/firebase'
 
-import { Button } from '../components/Button';
-import { useAuth } from '../hooks/useAuth';
+import { Button } from '../../components/Button';
+import { useAuth } from '../../hooks/useAuth';
 
-import '../styles/auth.scss';
+import '../Home/style.scss';
 
 export function NewRoom() {
   const { user } = useAuth();
@@ -21,15 +21,14 @@ export function NewRoom() {
     if(newRoom.trim() === ''){
       return
     }
+    const refRoom = ref(database, 'rooms')
 
-    const refRoom = database.ref('rooms')
-
-    const firebaseRoom = await refRoom.push({
+    const firebaseRoomKey = await push(refRoom, {
       title: newRoom,
       author: user?.id
-    })
+    }).key
 
-    history(`/rooms/${firebaseRoom.key}`)
+    history(`/rooms/${firebaseRoomKey}`)
   }
 
   return (

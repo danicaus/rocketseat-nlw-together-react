@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Let me Ask
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicação criada durante o evento Next Level Week da Rocketseat, na trilha React, ministrado por Diego Fernandes. Como fiz essa aula após aproximadamente um ano do seu lançamento, alguns pacotes estão em uma versão diferente do que foi ensinado em aula.
 
-## Available Scripts
+Layout realizado por Rebecca Gonzalez, [nesse link do Figma](https://www.figma.com/community/file/1009824839797878169).
 
-In the project directory, you can run:
+## Para rodar o projeto
 
-### `yarn start`
+Após baixar ou clonar este repositório, basta instalar todas as suas dependências usando `npm install` ou `yarn add`. Não é possível utilizar esse projeto sem as chaves do Firebase.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Para ter o seu próprio projeto, é necessário criar uma conta no Firebase e criar um novo projeto para realizar [autenticação via Google](https://firebase.google.com/docs/auth/web/start?authuser=0&hl=pt#web-version-8) e [gerar um Realtime Database](https://firebase.google.com/docs/database/web/start?authuser=0&hl=pt#web-version-8). Com isso, é necessário criar um arquivo `.env.local` com as seguintes variáveis:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```JavaScript
+firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://DATABASE_NAME.firebaseio.com",
+  projectId: "PROJECT_ID",
+  storageBucket: "PROJECT_ID.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID",
+  measurementId: "G-MEASUREMENT_ID",
+};
+```
 
-### `yarn test`
+A criação dessas variáveis é explicada na [documentação de primeiros passos do Firebase](https://firebase.google.com/docs/database/web/start?authuser=0&hl=pt#initialize_the_javascript_sdk), e é possível obter todas essas informações para um aplicativo criado dentro do projeto, nas configurações > Geral > Seus aplicativos (quando há uma aplicação selecionada)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
